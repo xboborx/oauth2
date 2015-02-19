@@ -19,20 +19,27 @@ class Oauth2Controller < ApplicationController
     code = params[:code]
     res = Net::HTTP.post_form(URI(GETTOKEN_URI), 'code' => code, 'client_secret' => CLIENT_SECRET, 'client_id' => CLIENT_ID, 'grant_type' => 'authorization_code') 
     hash_control  = JSON.parse(res.body)
+    puts res.body
     token = hash_control["access_token"]
+    
+    if token.nil?
+      render json: res.body
+    else
 
-    uri = URI('https://www.eventbriteapi.com/v3/users/me/')
-    req2 = Net::HTTP::Get.new(uri)
-    req2['Authorization'] = 'Bearer ' + token
 
-    res2 = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => uri.scheme == 'https') {|http|
-      http.request(req2)
-    }
+      uri = URI('https://www.eventbriteapi.com/v3/users/me/')
+      req2 = Net::HTTP::Get.new(uri)
+      req2['Authorization'] = 'Bearer ' + token
 
-   puts res2.content_type
+      res2 = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => uri.scheme == 'https') {|http|
+        http.request(req2)
+      }
 
-   @cont = res2.body
+      puts res2.content_type
 
-   render json: res2.body
+      @cont = res2.body
+
+      render json: res2.body
+    end
   end
 end
