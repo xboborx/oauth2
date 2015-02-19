@@ -1,0 +1,14 @@
+<div class="site-wrapper">
+	<div class="site-wrapper-inner">
+		<div class="cover-container">
+      <div class="inner cover">
+        <%= image_tag("logo.png", class: "lead") %>
+				<h1 class="cover-heading">Пожалуйста, авторизуйтесь!</h1>
+				<p class="lead">Для отображения ваших данных, вам необходимо пройти авторизацию</p>
+				<p class="lead">
+					<%= link_to "Авторизоваться", {action: 'auth'}, class: "btn btn-lg btn-default" %>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
